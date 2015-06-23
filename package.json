@@ -1,5 +1,5 @@
 {
-  "name": "helios",
+  "name": "heliosdb",
   "version": "0.2.1",
   "description": "In-memory graph database for NodeJS",
   "main": "helios.js",
