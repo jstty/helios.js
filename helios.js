@@ -1,18 +1,53 @@
 /* version = 0.2.0 */
 var Helios;
 (function (Helios) {
+
+    if ((typeof(require) !== 'undefined') && (typeof(module) !== 'undefined')) {
+        module.exports = Helios;
+    }
+
     var GraphDatabase = (function () {
         function GraphDatabase(options) {
-            var heliosDBPath = options && ('heliosDBPath' in options) ? options['heliosDBPath'] : './helios/lib/heliosDB.js';
+            this._options = {};
+            this._options['heliosDBPath'] = (options && ('heliosDBPath' in options) ? options['heliosDBPath'] : './helios/lib/heliosDB.js');
+        }
+
+        GraphDatabase.prototype.init = function () {
             try {
-                this.worker = new Worker(heliosDBPath);
-                this.db = Q_COMM.Connection(this.worker, null, {
-                    max: 1024
-                });
+                if ((typeof(require) !== 'undefined') && (typeof(module) !== 'undefined')) {
+                    var heliosDBPromise = require('./lib/heliosDB.js');
+                    var WebSocket = require('ws');
+                    var Q         = require('q');
+                    var qCon      = require('q-connection');
+                    var deferred  = Q.defer();
+
+                    heliosDBPromise.then(function(heliosDB){
+                        var ws = new WebSocket('ws://127.0.0.1:'+heliosDB._wssPort);
+                        this.db = qCon(ws, null, {
+                            max: 1024
+                        });
+
+                        // HACK: need to fix
+                        setTimeout(function() {
+                            deferred.resolve(this);
+                        }.bind(this), 100);
+                    }.bind(this));
+
+                    return deferred.promise;
+                } else {
+                    this.worker = new Worker(this._options['heliosDBPath']);
+                    this.worker.onmessage = function(event) {
+                        console.log("Worker said : " + event.data);
+                    };
+
+                    this.db = Q_COMM(this.worker, null, {
+                        max: 1024
+                    });
+                }
             } catch(err){
                 throw new Error(err.message);
             }
-        }
+        };
         
         GraphDatabase.prototype.setConfiguration = function (options) {
             var self = this;
@@ -41,7 +76,7 @@ var Helios;
                 }
             ]).then(function (message) {
                 console.log(message);
-            }).end();
+            }).done();
         };
         GraphDatabase.prototype.createEIndex = function (idxName) {
             this.db.invoke("dbCommand", [
@@ -53,7 +88,7 @@ var Helios;
                 }
             ]).then(function (message) {
                 console.log(message);
-            }).end();
+            }).done();
         };
         GraphDatabase.prototype.deleteVIndex = function (idxName) {
             this.db.invoke("dbCommand", [
@@ -65,7 +100,7 @@ var Helios;
                 }
             ]).then(function (message) {
                 console.log(message);
-            }).end();
+            }).done();
         };
         GraphDatabase.prototype.deleteEIndex = function (idxName) {
             this.db.invoke("dbCommand", [
@@ -77,11 +112,10 @@ var Helios;
                 }
             ]).then(function (message) {
                 console.log(message);
-            }).end();
+            }).done();
         };*/
 
         GraphDatabase.prototype.loadGraphSON = function (jsonData) {
-            var self = this;
             return this.db.invoke("dbCommand", [
                 {
                     method: 'loadGraphSON',
@@ -97,11 +131,10 @@ var Helios;
                 GraphDatabase.prototype.V = _v;
                 GraphDatabase.prototype.e = _e;
                 GraphDatabase.prototype.E = _e;
-                return self;
-            });
+                return this;
+            }.bind(this));
         };
         GraphDatabase.prototype.loadGraphML = function (xmlData) {
-            var self = this;
             return this.db.invoke("dbCommand", [
                 {
                     method: 'loadGraphML',
@@ -117,8 +150,8 @@ var Helios;
                 GraphDatabase.prototype.V = _v;
                 GraphDatabase.prototype.e = _e;
                 GraphDatabase.prototype.E = _e;
-                return self;
-            });            
+                return this;
+            }.bind(this));
         };
 
         function _v() {
@@ -127,26 +160,29 @@ var Helios;
                 args[_i] = arguments[_i + 0];
             }
             return new Pipeline('v', args, this);
-        };
+        }
         function _e() {
             var args = [];
             for (var _i = 0; _i < (arguments.length - 0); _i++) {
                 args[_i] = arguments[_i + 0];
             }
             return new Pipeline('e', args, this);
-        };
+        }
 
         GraphDatabase.prototype.shutdown = function () {
-            var worker = this.worker;
             this.db.invoke("dbCommand", [
                 {
                     method: 'shutdown',
                     parameters: []
                 }
             ]).then(function (message) {
-                worker.terminate();
+                if ((typeof(require) !== 'undefined') && (typeof(module) !== 'undefined')) {
+                    this.db.close();
+                } else {
+                    this.worker.terminate();
+                }
                 console.log('Closed');
-            }).end();
+            }.bind(this)).done();
         };
         return GraphDatabase;
     })();
@@ -206,7 +242,7 @@ var Helios;
                 if(trace) {
                     this.db.invoke("startTrace", true).fail(function (err) {
                         console.log(err.message);
-                    }).end();
+                    }).done();
                 }
                 if(func == 'pin') {
                     this.placeholder = this.messages.length;
@@ -224,15 +260,18 @@ var Helios;
             };
         };
         Pipeline.prototype.then = function (success, error) {
-            var ctx = this;
-            this.db.invoke("run", this.messages).then(function (result) {
-                if(ctx.placeholder > -1) {
-                    ctx.messages.length = ctx.placeholder;
-                }
-                return result;
-            }, function (error) {
-                return error;
-            }).then(success, error).end();
+            this.db.invoke("run", this.messages)
+                .then(function (result) {
+                    if(this.placeholder > -1) {
+                        this.messages.length = this.placeholder;
+                    }
+                    return result;
+                }.bind(this),
+                function (error) {
+                    return error;
+                })
+                .then(success, error)
+                .done();
         };
         return Pipeline;
     })();

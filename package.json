@@ -1,17 +1,17 @@
 {
   "name": "helios",
-  "version": "0.2.0",
-  "description": "In-memory graph database for modern browsers",
+  "version": "0.2.1",
+  "description": "In-memory graph database for NodeJS",
   "main": "helios.js",
   "directories": {
-    "test": "tests"
+    "test": "test"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/entrendipity/helios.js.git"
+    "url": "https://github.com/jstty/helios.js.git"
   },
   "keywords": [
     "graph",
@@ -20,22 +20,31 @@
     "graphdb",
     "gremlin"
   ],
-  "author": "Frank Panetta",
+  "original-author": "Frank Panetta",
+  "forked-author": {
+    "name": "Joseph E. Sutton",
+    "email": "joe@jstty.com",
+    "web": "http://www.jstty.com"
+  },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/entrendipity/helios.js/issues"
+    "url": "https://github.com/jstty/helios.js/issues"
+  },
+  "dependencies": {
+    "freeport": "^1.0.5",
+    "q": "^1.4.1",
+    "q-connection": "^0.6.1",
+    "sax": "^1.1.1",
+    "ws": "^0.7.2"
   },
   "devDependencies": {
-    "mocha": "~1.13.0",
-    "karma-script-launcher": "~0.1.0",
-    "karma-firefox-launcher": "~0.1.0",
-    "karma-chrome-launcher": "~0.1.0",
-    "karma-html2js-preprocessor": "~0.1.0",
-    "karma-jasmine": "~0.1.3",
-    "karma-requirejs": "~0.1.0",
-    "karma-coffee-preprocessor": "~0.1.0",
-    "karma-phantomjs-launcher": "~0.1.0",
-    "karma": "~0.10.2",
-    "karma-mocha": "~0.1.0"
+    "chai": "^3.0.0",
+    "mocha": "^2.2.5"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "test": "mocha"
   }
 }
