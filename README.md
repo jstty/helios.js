@@ -1,13 +1,18 @@
-# HeliosJS  
+# HeliosDB
 [![Build Status](https://secure.travis-ci.org/jstty/helio.js.png)](http://travis-ci.org/jstty/helio.js) [![Dependency Status](https://david-dm.org/jstty/helio.js.png?theme=shields.io)](https://david-dm.org/jstty/helio.js) [![devDependency Status](https://david-dm.org/jstty/helio.js/dev-status.png?theme=shields.io)](https://david-dm.org/jstty/helio.js#info=devDependencies) [![NPM](https://nodei.co/npm/helio.js.png)](https://nodei.co/npm/helio.js/)
 =====
 
-HeliosJS is an in-memory graph database for NodeJS. It employs a non-blocking asynchronous architecture through the use of Promises and Web Workers. This enables HeliosJS to download and process large data sets without blocking the UI.
+FORKED from [HeliosJS](https://github.com/entrendipity/helios.js)
 
+HeliosDB is an in-memory graph database for NodeJS. It employs a non-blocking asynchronous architecture through the use of Promises and Web Workers. This enables HeliosJS to download and process large data sets without blocking the UI.
+
+```sh
+npm install HeliosDB
+```
 
 In order to traverse the graph, HeliosJS uses a [Gremlin](http://gremlin.tinkerpop.com) inspired graph traversal language to query, analyze and manipulate the graph. Gremlin is an open source project maintained by [TinkerPop](http://tinkerpop.com). For more information on Gremlin, see the [Gremlin wiki](https://github.com/tinkerpop/gremlin/wiki).
 
-__Please see the [website](http://entrendipity.github.com/helios.js/) for full documentation of the current version (0.2.1).__
+__Please see the [website](http://entrendipity.github.com/helios.js/) for full documentation of the current version (0.2.0).__
 
 ## License  
 

@@ -1,6 +1,6 @@
 {
-  "name": "heliosdb",
-  "version": "0.2.1",
+  "name": "HeliosDB",
+  "version": "0.2.2",
   "description": "In-memory graph database for NodeJS",
   "main": "helios.js",
   "directories": {
