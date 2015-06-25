@@ -1,5 +1,5 @@
 # HeliosDB
-[![Build Status](https://secure.travis-ci.org/jstty/helio.js.png)](http://travis-ci.org/jstty/helio.js) [![Dependency Status](https://david-dm.org/jstty/helio.js.png?theme=shields.io)](https://david-dm.org/jstty/helio.js) [![devDependency Status](https://david-dm.org/jstty/helio.js/dev-status.png?theme=shields.io)](https://david-dm.org/jstty/helio.js#info=devDependencies) [![NPM](https://nodei.co/npm/helio.js.png)](https://nodei.co/npm/helio.js/)
+[![Build Status](https://secure.travis-ci.org/jstty/heliodb.png)](http://travis-ci.org/jstty/heliosdb) [![Dependency Status](https://david-dm.org/jstty/heliosdb.png?theme=shields.io)](https://david-dm.org/jstty/heliosdb) [![devDependency Status](https://david-dm.org/jstty/heliosdb/dev-status.png?theme=shields.io)](https://david-dm.org/jstty/heliosdb#info=devDependencies) [![NPM](https://nodei.co/npm/heliosdb.png)](https://nodei.co/npm/heliosdb/)
 =====
 
 FORKED from [HeliosJS](https://github.com/entrendipity/helios.js)
